@@ -14,6 +14,11 @@ globals[
 turtles-own [energy move-distance max-energy]
 patches-own [patch-growth-countdown]
 
+fishes-own [
+  schoolmates
+  nearest-neighbor
+]
+
 breed [fishes fish]
 breed [sharks blahaj]
 breed [foods food]
@@ -27,6 +32,7 @@ to setup
 
   set-default-shape fishes "default"
   create-fishes initial-number-fishes [
+    set size 1
     set max-energy fish-max-energy
     set energy random max-energy
     set-energy-color 126
@@ -35,6 +41,7 @@ to setup
 
   set-default-shape sharks "default"
   create-fishes initial-number-sharks [
+    set size 1.3
     set max-energy shark-max-energy
     set energy random max-energy
     set-energy-color 96
@@ -51,21 +58,38 @@ end
 to go
   ; govern shark movement
   ask sharks [
-    swim
+    set-direction
   ]
 
   ask fishes [
-    swim
+    find-schoolmates
+    find-nearest-neighbor
+    set-direction
   ]
+
+  repeat abs(1 / movement-constant) [ask turtles [fd movement-constant] display]
+  ;; copies how Flocking does it to make swimming look like swimming
   tick
 end
 
-; generic swim
-to swim
-  let factor (- max-turn) + (random max-turn * 2 + 1)
-  set heading (heading + factor)
-  fd movement-constant
+;; MOVEMENT
+
+to set-direction
+    let factor (- max-turn) + (random max-turn * 2 + 1)
+    set heading (heading + factor)
 end
+
+;; SCHOOLS
+
+to find-schoolmates
+  set schoolmates other fishes in-radius fish-vision
+end
+
+to find-nearest-neighbor
+  set nearest-neighbor min-one-of schoolmates [distance myself]
+end
+
+;; HELPERS
 
 to set-energy-color [ turtle-color ]
   let energy-ratio (energy / max-energy)
@@ -94,8 +118,8 @@ GRAPHICS-WINDOW
 16
 -16
 16
-0
-0
+1
+1
 1
 ticks
 30.0
@@ -109,7 +133,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-50.0
+100.0
 1
 1
 NIL
@@ -139,9 +163,9 @@ SLIDER
 207
 initial-number-sharks
 initial-number-sharks
-0
+1
 100
-50.0
+100.0
 1
 1
 NIL
@@ -208,6 +232,21 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+32
+317
+204
+350
+fish-vision
+fish-vision
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
