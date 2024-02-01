@@ -49,7 +49,22 @@ to setup
 end
 
 to go
+  ; govern shark movement
+  ask sharks [
+    swim
+  ]
 
+  ask fishes [
+    swim
+  ]
+  tick
+end
+
+; generic swim
+to swim
+  let factor (- max-turn) + (random max-turn * 2 + 1)
+  set heading (heading + factor)
+  fd movement-constant
 end
 
 to set-energy-color [ turtle-color ]
@@ -161,6 +176,38 @@ shark-max-energy
 1
 NIL
 HORIZONTAL
+
+SLIDER
+13
+94
+185
+127
+max-turn
+max-turn
+1
+40
+32.0
+1
+1
+NIL
+HORIZONTAL
+
+BUTTON
+140
+45
+203
+78
+Go
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
