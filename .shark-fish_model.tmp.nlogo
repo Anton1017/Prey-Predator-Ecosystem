@@ -49,6 +49,7 @@ to setup
 end
 
 to go
+
 end
 
 to set-energy-color [ turtle-color ]
