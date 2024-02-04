@@ -26,9 +26,8 @@ breed [foods food]
 to setup
   clear-all
 
-  set-default-shape fishes "default"
+  set-default-shape fishes "fish"
   create-fishes initial-number-fishes [
-    set shape "fish"
     set size 1
     set max-energy fish-max-energy
     set energy (1 + random max-energy)
@@ -36,10 +35,9 @@ to setup
     setxy random-xcor random-ycor
   ]
 
-  set-default-shape sharks "default"
+  set-default-shape sharks "shark"
   create-sharks initial-number-sharks [
-    set shape "shark"
-    set size 1.3
+    set size 3
     set max-energy shark-max-energy
     set energy (1 + random max-energy)
     set-energy-color 98
@@ -192,7 +190,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-3.0
+32.0
 1
 1
 NIL
@@ -222,7 +220,7 @@ shark-max-energy
 shark-max-energy
 0
 100
-50.0
+10.0
 1
 1
 NIL
@@ -286,6 +284,36 @@ swim-stride
 2
 0.2
 0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+12
+377
+184
+410
+number-static-food
+number-static-food
+0
+100
+51.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+12
+428
+184
+461
+number-dynamic-food
+number-dynamic-food
+0
+100
+50.0
+1
 1
 NIL
 HORIZONTAL
