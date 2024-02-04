@@ -22,7 +22,8 @@ fishes-own [
 breed [fishes fish]
 breed [sharks blahaj]
 breed [foods food]
-
+breed [algaes algae]
+breed [jellyfishes jellyfish]
 to setup
   clear-all
 
@@ -44,6 +45,21 @@ to setup
     setxy random-xcor random-ycor
   ]
 
+  set-default-shape algaes "plant"
+  create-algaes initial-number-algae
+  [
+    set size 1
+    setxy random-xcor random-ycor
+    set color green
+  ]
+
+  set-default-shape jellyfishes "default"
+  create-jellyfishes initial-number-jellyfish
+  [
+    set size 1
+    setxy random-xcor random-ycor
+    set color violet
+  ]
 
   ask patches [
     set pcolor 101
@@ -293,8 +309,8 @@ SLIDER
 377
 184
 410
-number-static-food
-number-static-food
+initial-number-jellyfish
+initial-number-jellyfish
 0
 100
 51.0
@@ -308,11 +324,11 @@ SLIDER
 428
 184
 461
-number-dynamic-food
-number-dynamic-food
+initial-number-algae
+initial-number-algae
 0
 100
-50.0
+7.0
 1
 1
 NIL
