@@ -57,7 +57,7 @@ to setup
   [
     set size 1
     setxy random-xcor random-ycor
-    set color violet
+    set color green
   ]
 
   ask patches [
@@ -84,9 +84,13 @@ to go
     move
   ]
 
-  ask turtles with [breed = "fish" or breed = "blahaj"] [
-    set energy (energy - 1) ;; all entities lose 1 energy per tick
-    die?
+  ask turtles [
+    if breed = fishes or breed = sharks
+    [
+      set energy (energy - 1) ;; all entities lose 1 energy per tick
+      die?
+    ]
+
   ]
 
   ;; copies how Flocking does it to make the animation look clean
