@@ -28,6 +28,7 @@ to setup
 
   set-default-shape fishes "default"
   create-fishes initial-number-fishes [
+    set shape "fish"
     set size 1
     set max-energy fish-max-energy
     set energy (1 + random max-energy)
@@ -37,6 +38,7 @@ to setup
 
   set-default-shape sharks "default"
   create-sharks initial-number-sharks [
+    set shape "shark"
     set size 1.3
     set max-energy shark-max-energy
     set energy (1 + random max-energy)
@@ -121,7 +123,6 @@ to find-nearest-neighbor
 end
 
 ;; HELPERS
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -517,6 +518,19 @@ Polygon -7500403 true true 165 180 165 210 225 180 255 120 210 135
 Polygon -7500403 true true 135 105 90 60 45 45 75 105 135 135
 Polygon -7500403 true true 165 105 165 135 225 105 255 45 210 60
 Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
+
+shark
+false
+0
+Polygon -7500403 true true 283 153 288 149 271 146 301 145 300 138 247 119 190 107 104 117 54 133 39 134 10 99 9 112 19 142 9 175 10 185 40 158 69 154 64 164 80 161 86 156 132 160 209 164
+Polygon -7500403 true true 199 161 152 166 137 164 169 154
+Polygon -7500403 true true 188 108 172 83 160 74 156 76 159 97 153 112
+Circle -16777216 true false 256 129 12
+Line -16777216 false 222 134 222 150
+Line -16777216 false 217 134 217 150
+Line -16777216 false 212 134 212 150
+Polygon -7500403 true true 78 125 62 118 63 130
+Polygon -7500403 true true 121 157 105 161 101 156 106 152
 
 sheep
 false
