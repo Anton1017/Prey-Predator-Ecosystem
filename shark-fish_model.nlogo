@@ -26,27 +26,24 @@ breed [foods food]
 to setup
   clear-all
 
-  ; init constants
-  set movement-constant 0.2;
-
-
   set-default-shape fishes "default"
   create-fishes initial-number-fishes [
     set size 1
     set max-energy fish-max-energy
-    set energy random max-energy
-    set-energy-color 126
+    set energy (1 + random max-energy)
+    set-energy-color 128
     setxy random-xcor random-ycor
   ]
 
   set-default-shape sharks "default"
-  create-fishes initial-number-sharks [
+  create-sharks initial-number-sharks [
     set size 1.3
     set max-energy shark-max-energy
-    set energy random max-energy
-    set-energy-color 96
+    set energy (1 + random max-energy)
+    set-energy-color 98
     setxy random-xcor random-ycor
   ]
+
 
   ask patches [
     set pcolor 101
@@ -57,8 +54,11 @@ end
 
 to go
   ; govern shark movement
+  update-energy
+  set movement-constant swim-stride
   ask sharks [
     set-direction
+
   ]
 
   ask fishes [
@@ -67,9 +67,33 @@ to go
     set-direction
   ]
 
-  repeat abs(1 / movement-constant) [ask turtles [fd movement-constant] display]
-  ;; copies how Flocking does it to make swimming look like swimming
+  repeat abs(1 / movement-constant) [
+    move
+  ]
+
+  ask turtles [
+    set energy (energy - 1) ;; all entities lose 1 energy per tick
+    die?
+  ]
+
+  ;; copies how Flocking does it to make the animation look clean
   tick
+end
+
+;; ENERGY MANAGEMENT
+to die?
+  if energy <= 0 [die]
+end
+
+to set-energy-color [ turtle-color ]
+  let energy-ratio (energy / max-energy)
+  let change-factor (-5) * (energy-ratio) + 5
+  set color (turtle-color - abs(change-factor))
+end
+
+to update-energy
+  ask sharks [ set-energy-color 98 ]
+  ask fishes [ set-energy-color 128 ]
 end
 
 ;; MOVEMENT
@@ -78,6 +102,13 @@ to set-direction
     let factor (- max-turn) + (random max-turn * 2 + 1)
     set heading (heading + factor)
 end
+
+to move
+  ask turtles [
+    fd movement-constant
+  ] display
+end
+
 
 ;; SCHOOLS
 
@@ -91,11 +122,6 @@ end
 
 ;; HELPERS
 
-to set-energy-color [ turtle-color ]
-  let energy-ratio (energy / max-energy)
-  let change-factor (-5) * (energy-ratio) + 5
-  set color (turtle-color - abs(change-factor))
-end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -140,10 +166,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-23
-48
-87
-81
+51
+46
+153
+79
 Setup
 setup
 NIL
@@ -165,7 +191,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-100.0
+3.0
 1
 1
 NIL
@@ -217,10 +243,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-140
-45
-203
-78
+50
+10
+153
+43
 Go
 go
 T
@@ -234,16 +260,31 @@ NIL
 1
 
 SLIDER
-32
-317
-204
-350
+11
+293
+183
+326
 fish-vision
 fish-vision
 0
 100
 50.0
 1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+11
+330
+183
+363
+swim-stride
+swim-stride
+0.1
+2
+0.2
+0.1
 1
 NIL
 HORIZONTAL
