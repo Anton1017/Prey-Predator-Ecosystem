@@ -32,6 +32,7 @@ to setup
     set energy (1 + random max-energy)
     set-energy-color 128
     setxy random-xcor random-ycor
+    set schoolmates no-turtles
   ]
 
   set-default-shape sharks "default"
@@ -76,16 +77,14 @@ to go
   ]
 
   ask fishes [
-    find-schoolmates
-    find-nearest-neighbor
-    set-direction
+    school
   ]
 
   repeat abs(1 / movement-constant) [
     move
   ]
 
-  ask turtles with [breed = "fishes" or breed = "sharks"] [
+  ask turtles with [breed = "fish" or breed = "blahaj"] [
     set energy (energy - 1) ;; all entities lose 1 energy per tick
     die?
   ]
@@ -113,7 +112,7 @@ end
 ;; MOVEMENT
 
 to set-direction
-    let factor (- max-turn) + (random max-turn * 2 + 1)
+    let factor (- max-turning ) + (random max-turning * 2 + 1)
     set heading (heading + factor)
 end
 
@@ -124,7 +123,17 @@ to move
 end
 
 
-;; SCHOOLS
+;; SCHOOLS P MUCH A COPY OF FLOCKING RN
+
+to school
+  find-schoolmates
+  if any? schoolmates
+  [ find-nearest-neighbor
+    ifelse distance nearest-neighbor < minimum-spread
+    [ separate ]
+    [ align
+      cohere ] ]
+end
 
 to find-schoolmates
   set schoolmates other fishes in-radius fish-vision
@@ -134,7 +143,62 @@ to find-nearest-neighbor
   set nearest-neighbor min-one-of schoolmates [distance myself]
 end
 
-;; HELPERS
+to separate
+  turn-away ([heading] of nearest-neighbor) max-separate-turn
+end
+
+to align
+  turn-towards average-schoolmate-heading max-align-turn
+end
+
+to-report average-schoolmate-heading  ;; turtle procedure
+  ;; We can't just average the heading variables here.
+  ;; For example, the average of 1 and 359 should be 0,
+  ;; not 180.  So we have to use trigonometry.
+  let x-component sum [dx] of schoolmates
+  let y-component sum [dy] of schoolmates
+  ifelse x-component = 0 and y-component = 0
+    [ report heading ]
+    [ report atan x-component y-component ]
+end
+
+
+to cohere
+  turn-towards average-heading-towards-schoolmates max-cohere-turn
+end
+
+to-report average-heading-towards-schoolmates  ;; turtle procedure
+  ;; "towards myself" gives us the heading from the other turtle
+  ;; to me, but we want the heading from me to the other turtle,
+  ;; so we add 180
+  let x-component mean [sin (towards myself + 180)] of schoolmates
+  let y-component mean [cos (towards myself + 180)] of schoolmates
+  ifelse x-component = 0 and y-component = 0
+    [ report heading ]
+    [ report atan x-component y-component ]
+end
+
+
+
+;; HELPERS FROM FLOCKING
+
+to turn-towards [new-heading max-turn]  ;; turtle procedure
+  turn-at-most (subtract-headings new-heading heading) max-turn
+end
+
+to turn-away [new-heading max-turn]  ;; turtle procedure
+  turn-at-most (subtract-headings heading new-heading) max-turn
+end
+
+to turn-at-most [turn max-turn]  ;; turtle procedure
+  ifelse abs turn > max-turn
+    [ ifelse turn > 0
+        [ rt max-turn ]
+        [ lt max-turn ] ]
+    [ rt turn ]
+end
+
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -172,7 +236,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-100.0
+49.0
 1
 1
 NIL
@@ -204,7 +268,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-31.0
+24.0
 1
 1
 NIL
@@ -219,7 +283,7 @@ fish-max-energy
 fish-max-energy
 0
 100
-54.0
+27.0
 1
 1
 NIL
@@ -234,7 +298,7 @@ shark-max-energy
 shark-max-energy
 0
 100
-48.0
+40.0
 1
 1
 NIL
@@ -245,11 +309,11 @@ SLIDER
 94
 185
 127
-max-turn
-max-turn
+max-turning
+max-turning
 1
 40
-40.0
+39.0
 1
 1
 NIL
@@ -281,7 +345,7 @@ fish-vision
 fish-vision
 0
 100
-50.0
+29.0
 1
 1
 NIL
@@ -330,6 +394,66 @@ initial-number-algae
 1
 1
 NIL
+HORIZONTAL
+
+SLIDER
+16
+471
+188
+504
+minimum-spread
+minimum-spread
+1
+100
+1.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+14
+515
+229
+548
+max-separate-turn
+max-separate-turn
+1
+360
+2.8
+0.1
+1
+degrees
+HORIZONTAL
+
+SLIDER
+32
+590
+222
+623
+max-align-turn
+max-align-turn
+1
+360
+1.0
+0.10
+1
+degrees
+HORIZONTAL
+
+SLIDER
+29
+549
+232
+582
+max-cohere-turn
+max-cohere-turn
+1
+360
+1.0
+0.10
+1
+degrees
 HORIZONTAL
 
 @#$#@#$#@
