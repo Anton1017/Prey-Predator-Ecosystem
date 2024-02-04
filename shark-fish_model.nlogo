@@ -121,7 +121,15 @@ to set-direction
 end
 
 to move
-  ask turtles [
+  ask fishes [
+    fd movement-constant
+  ]
+
+    ask sharks [
+    fd movement-constant
+  ]
+
+    ask jellyfishes [
     fd movement-constant
   ] display
 end
@@ -201,7 +209,6 @@ to turn-at-most [turn max-turn]  ;; turtle procedure
         [ lt max-turn ] ]
     [ rt turn ]
 end
-
 
 @#$#@#$#@
 GRAPHICS-WINDOW
