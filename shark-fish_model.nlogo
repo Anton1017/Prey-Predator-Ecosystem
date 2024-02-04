@@ -11,13 +11,11 @@ globals[
   max-fish             ; max number of fish we can have on the board
 ]
 
-turtles-own [energy move-distance max-energy]
-patches-own [patch-growth-countdown]
-
-fishes-own [
+fishes-own [energy move-distance max-energy
   schoolmates
-  nearest-neighbor
-]
+  nearest-neighbor]
+sharks-own [energy move-distance max-energy]
+patches-own [patch-growth-countdown]
 
 breed [fishes fish]
 breed [sharks blahaj]
@@ -27,7 +25,7 @@ breed [jellyfishes jellyfish]
 to setup
   clear-all
 
-  set-default-shape fishes "fish"
+  set-default-shape fishes "default"
   create-fishes initial-number-fishes [
     set size 1
     set max-energy fish-max-energy
@@ -36,9 +34,9 @@ to setup
     setxy random-xcor random-ycor
   ]
 
-  set-default-shape sharks "shark"
+  set-default-shape sharks "default"
   create-sharks initial-number-sharks [
-    set size 3
+    set size 1.5
     set max-energy shark-max-energy
     set energy (1 + random max-energy)
     set-energy-color 98
@@ -87,7 +85,7 @@ to go
     move
   ]
 
-  ask turtles [
+  ask turtles with [breed = "fishes" or breed = "sharks"] [
     set energy (energy - 1) ;; all entities lose 1 energy per tick
     die?
   ]
@@ -206,7 +204,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-32.0
+31.0
 1
 1
 NIL
@@ -236,7 +234,7 @@ shark-max-energy
 shark-max-energy
 0
 100
-10.0
+48.0
 1
 1
 NIL
