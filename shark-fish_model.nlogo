@@ -37,7 +37,7 @@ to setup
 
   set-default-shape sharks "shark"
   create-sharks initial-number-sharks [
-    set size 1
+    set size 1.5
     set max-energy shark-max-energy
     set energy (1 + random max-energy)
     set-energy-color 98
