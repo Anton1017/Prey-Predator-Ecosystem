@@ -73,11 +73,15 @@ to go
 
   ]
 
-  hungry-prey?
+
   hungry-predator?
 
   ask fishes [
-    school
+    ifelse (not hungry-prey?) [
+      school
+    ] [
+      hungry-prey-action
+    ]
   ]
 
   repeat abs(1 / movement-constant) [
@@ -136,12 +140,27 @@ end
 
 
 ;; EATING FOR PREY
-to hungry-prey?
+to hungry-prey-action
   ask fishes [
-     if any? (turtles-on patch-here) with [breed = algaes or breed = jellyfishes] [
-      if energy <= (max-energy / 2) [eat-prey]
+    ;; 20 cone radius for the moment
+    let food-in-view turtles with [breed = algaes or breed = jellyfishes] in-cone 20 fish-vision
+
+    ;; face turtle to food in front of vision cone
+    ifelse any? food-in-view [
+      let closest-target min-one-of food-in-view [distance myself]
+      face closest-target
+
+      if any? (turtles-on patch-here) with [breed = algaes or breed = jellyfishes] [
+        eat-prey
+      ]
+    ] [
+      school
     ]
   ]
+end
+
+to-report hungry-prey?
+  report energy <= (max-energy / 2)
 end
 
 to eat-prey
@@ -568,7 +587,7 @@ energy-gain-prey
 energy-gain-prey
 1
 100
-55.0
+65.0
 1
 1
 NIL
