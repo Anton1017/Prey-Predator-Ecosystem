@@ -27,7 +27,7 @@ to setup
 
   set-default-shape fishes "fish"
   create-fishes initial-number-fishes [
-    set size 1
+    set size 0.8
     set max-energy fish-max-energy
     set energy (1 + random max-energy)
     set-energy-color 128
@@ -37,7 +37,7 @@ to setup
 
   set-default-shape sharks "shark"
   create-sharks initial-number-sharks [
-    set size 1.5
+    set size 1
     set max-energy shark-max-energy
     set energy (1 + random max-energy)
     set-energy-color 98
@@ -47,7 +47,7 @@ to setup
   set-default-shape algaes "plant"
   create-algaes initial-number-algae
   [
-    set size 1
+    set size 0.4
     setxy random-xcor random-ycor
     set color green
   ]
@@ -55,7 +55,7 @@ to setup
   set-default-shape jellyfishes "default"
   create-jellyfishes initial-number-jellyfish
   [
-    set size 1
+    set size 0.4
     setxy random-xcor random-ycor
     set color green
   ]
@@ -209,7 +209,6 @@ to turn-at-most [turn max-turn]  ;; turtle procedure
         [ lt max-turn ] ]
     [ rt turn ]
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -294,7 +293,7 @@ fish-max-energy
 fish-max-energy
 0
 100
-27.0
+100.0
 1
 1
 NIL
@@ -431,7 +430,7 @@ max-separate-turn
 max-separate-turn
 1
 360
-2.8
+103.3
 0.1
 1
 degrees
@@ -446,7 +445,7 @@ max-align-turn
 max-align-turn
 1
 360
-1.0
+97.4
 0.10
 1
 degrees
@@ -461,7 +460,7 @@ max-cohere-turn
 max-cohere-turn
 1
 360
-1.0
+54.5
 0.10
 1
 degrees
