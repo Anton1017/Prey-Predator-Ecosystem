@@ -141,21 +141,19 @@ end
 
 ;; EATING FOR PREY
 to hungry-prey-action
-  ask fishes [
-    ;; 20 cone radius for the moment
-    let food-in-view turtles with [breed = algaes or breed = jellyfishes] in-cone 20 fish-vision
+  ;; 20 cone radius for the moment
+  let food-in-view turtles with [breed = algaes or breed = jellyfishes] in-cone 20 fish-vision
 
-    ;; face turtle to food in front of vision cone
-    ifelse any? food-in-view [
-      let closest-target min-one-of food-in-view [distance myself]
-      face closest-target
+  ;; face turtle to food in front of vision cone
+  ifelse any? food-in-view [
+    let closest-target min-one-of food-in-view [distance myself]
+    face closest-target
 
-      if any? (turtles-on patch-here) with [breed = algaes or breed = jellyfishes] [
-        eat-prey
-      ]
-    ] [
-      school
+    if any? (turtles-on patch-here) with [breed = algaes or breed = jellyfishes] [
+      eat-prey
     ]
+  ] [
+    school
   ]
 end
 
