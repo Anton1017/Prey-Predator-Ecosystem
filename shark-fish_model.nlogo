@@ -3,8 +3,6 @@ globals[
   fish-energy-gain     ; amount of energy a fish gains after eating
   initial-fish-energy  ; initial amount of energy fish start with upon spawning
   initial-shark-energy ; initial amount of energy sharks start with upon spawning
-  food-patch-count     ; number of food patches
-  food-respawn-time    ; how long it takes for the food to respawn
 
   movement-constant;
 
@@ -15,7 +13,7 @@ fishes-own [energy move-distance max-energy
   schoolmates
   nearest-neighbor]
 sharks-own [energy move-distance max-energy]
-patches-own [patch-growth-countdown]
+patches-own [patch-growth-countdown algae-patch alive]
 
 breed [fishes fish]
 breed [sharks blahaj]
@@ -45,11 +43,10 @@ to setup
   ]
 
   set-default-shape algaes "plant"
-  create-algaes initial-number-algae
+
+  repeat initial-number-algae-patches
   [
-    set size 0.4
-    setxy random-xcor random-ycor
-    set color green
+    set-algae-patches (patch random-xcor random-ycor)
   ]
 
   set-default-shape jellyfishes "default"
@@ -93,14 +90,49 @@ to go
       set energy (energy - 1) ;; all entities lose 1 energy per tick
       die?
     ]
-
   ]
+
+  respawn-food?
 
   ;; copies how Flocking does it to make the animation look clean
   tick
 end
 
 ;; Check if energy is at a certain threshold, this is supposed to make it so that schools don't starve each other
+
+
+;; RESPAWNING FOOD
+to set-algae-patches [target-patch]
+  let algae-patches patches with [distance target-patch < algae-spawn-radius]
+  ask algae-patches [
+    set algae-patch true
+    set alive true
+    sprout-algaes 1
+    [
+      set color green
+      set size 0.4
+    ]
+  ]
+end
+
+
+to respawn-food?
+  ask patches with [algae-patch = true and alive = false]
+  [
+    ifelse patch-growth-countdown = 0
+    [sprout-algaes 1
+      [
+        set color green
+        set size 0.4
+      ]
+      set alive true
+    ]
+    [
+      set patch-growth-countdown patch-growth-countdown - 1
+    ]
+  ]
+end
+
 
 
 ;; EATING FOR PREY
@@ -113,7 +145,13 @@ to hungry-prey?
 end
 
 to eat-prey
-  ask min-one-of (turtles-on patch-here) with [breed = algaes or breed = jellyfishes] [distance myself]  [die]
+  ask min-one-of (turtles-on patch-here) with [breed = algaes or breed = jellyfishes] [distance myself]  [
+    ask patch-here [
+      set alive false
+      set patch-growth-countdown food-respawn-time
+    ]
+    die
+  ]
   set energy energy + energy-gain-prey
 end
 
@@ -313,7 +351,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-1.0
+12.0
 1
 1
 NIL
@@ -358,7 +396,7 @@ max-turning
 max-turning
 1
 40
-2.0
+22.0
 1
 1
 NIL
@@ -429,13 +467,13 @@ HORIZONTAL
 SLIDER
 19
 412
-191
+192
 445
-initial-number-algae
-initial-number-algae
-0
-100
-52.0
+initial-number-algae-patches
+initial-number-algae-patches
+1
+20
+5.0
 1
 1
 NIL
@@ -534,6 +572,51 @@ energy-gain-prey
 1
 1
 NIL
+HORIZONTAL
+
+SLIDER
+198
+458
+370
+491
+energy-gain-predator
+energy-gain-predator
+1
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+20
+544
+192
+577
+algae-spawn-radius
+algae-spawn-radius
+1
+20
+4.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+19
+502
+188
+535
+food-respawn-time
+food-respawn-time
+10
+100
+50.0
+1
+1
+ticks
 HORIZONTAL
 
 @#$#@#$#@
