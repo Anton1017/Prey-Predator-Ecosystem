@@ -213,7 +213,7 @@ end
 ;; REPRODUCTION FOR PREY
 to reproduce-prey?
   ;; simulate annual reproduction every 1000 ticks
-  if (ticks mod 100 = 0)[
+  if (ticks mod 1000 = 0)[
     if(energy >= (max-energy / 2) and (health-status >= max-energy / 2))[
       hatch 1 [
         setxy ([xcor] of myself + random-float 2 - 1)
