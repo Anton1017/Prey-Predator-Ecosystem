@@ -76,6 +76,8 @@ to go
 
   ]
 
+  hungry-prey?
+
   ask fishes [
     school
   ]
@@ -95,6 +97,33 @@ to go
 
   ;; copies how Flocking does it to make the animation look clean
   tick
+end
+
+;; Check if energy is at a certain threshold, this is supposed to make it so that schools don't starve each other
+
+
+;; EATING FOR PREY
+to hungry-prey?
+  ask fishes [
+     if any? (turtles-on patch-here) with [breed = algaes or breed = jellyfishes] [
+      if energy <= (max-energy / 2) [eat-prey]
+    ]
+  ]
+end
+
+to eat-prey
+  ask min-one-of (turtles-on patch-here) with [breed = algaes or breed = jellyfishes] [distance myself]  [die]
+  set energy energy + energy-gain-prey
+end
+
+;; EATING FOR PREDATOR
+to hungry-predator?
+  ask sharks [
+    if energy <= (max-energy / 2) [eat-predator]
+  ]
+end
+
+to eat-predator
 end
 
 ;; ENERGY MANAGEMENT
@@ -130,12 +159,13 @@ to move
   ]
 
     ask jellyfishes [
-    fd movement-constant
+    set-direction
+    fd movement-constant / 10
   ] display
 end
 
 
-;; SCHOOLS P MUCH A COPY OF FLOCKING RN
+;; SCHOOLS P MUCH A COPY OF FLOCKING
 
 to school
   find-schoolmates
@@ -246,7 +276,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-49.0
+76.0
 1
 1
 NIL
@@ -278,7 +308,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-24.0
+1.0
 1
 1
 NIL
@@ -385,7 +415,7 @@ initial-number-jellyfish
 initial-number-jellyfish
 0
 100
-13.0
+52.0
 1
 1
 NIL
@@ -400,7 +430,7 @@ initial-number-algae
 initial-number-algae
 0
 100
-7.0
+52.0
 1
 1
 NIL
@@ -445,7 +475,7 @@ max-align-turn
 max-align-turn
 1
 90
-42.2
+28.2
 0.10
 1
 degrees
@@ -460,7 +490,7 @@ max-cohere-turn
 max-cohere-turn
 1
 90
-40.3
+29.0
 0.10
 1
 degrees
@@ -485,6 +515,21 @@ Setup Parameters\n
 11
 0.0
 1
+
+SLIDER
+17
+456
+189
+489
+energy-gain-prey
+energy-gain-prey
+1
+100
+55.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
