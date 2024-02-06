@@ -10,6 +10,7 @@ globals[
 ]
 
 fishes-own [energy move-distance max-energy
+  health-status ;; for monitoring reproduction eligibility
   schoolmates
   nearest-neighbor]
 sharks-own [energy move-distance max-energy]
@@ -27,6 +28,7 @@ to setup
   create-fishes initial-number-fishes [
     set size 0.8
     set max-energy fish-max-energy
+    set health-status 50
     set energy (1 + random max-energy)
     set-energy-color 128
     setxy random-xcor random-ycor
@@ -93,6 +95,11 @@ to go
     [
       set energy (energy - 1) ;; all entities lose 1 energy per tick
       die?
+    ]
+
+    if breed = fishes [
+      set-health-status
+      reproduce-prey?
     ]
   ]
 
@@ -200,6 +207,29 @@ end
 to update-energy
   ask sharks [ set-energy-color 98 ]
   ask fishes [ set-energy-color 128 ]
+end
+
+
+;; REPRODUCTION FOR PREY
+to reproduce-prey?
+  ;; simulate annual reproduction every 1000 ticks
+  if (ticks mod 100 = 0)[
+    if(energy >= (max-energy / 2) and (health-status >= max-energy / 2))[
+      hatch 1 [
+        setxy ([xcor] of myself + random-float 2 - 1)
+              ([ycor] of myself + random-float 2 - 1)
+      ]
+    ]
+  ]
+end
+
+to set-health-status
+  if (energy >= ( max-energy / 2 ) and (health-status < 100))[
+    set health-status (health-status + 1)
+  ]
+  if (energy < ( max-energy / 2 ) and (health-status > 0))[
+    set health-status (health-status - 3)
+  ]
 end
 
 ;; MOVEMENT
@@ -336,7 +366,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-76.0
+15.0
 1
 1
 NIL
