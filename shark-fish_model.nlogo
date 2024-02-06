@@ -77,6 +77,7 @@ to go
   ]
 
   hungry-prey?
+  hungry-predator?
 
   ask fishes [
     school
@@ -119,11 +120,15 @@ end
 ;; EATING FOR PREDATOR
 to hungry-predator?
   ask sharks [
-    if energy <= (max-energy / 2) [eat-predator]
+     if any? (turtles-on patch-here) with [breed = fishes] [
+      if energy <= (max-energy / 2) [eat-predator]
+    ]
   ]
 end
 
 to eat-predator
+  ask min-one-of (turtles-on patch-here) with [breed = fishes] [distance myself] [die]
+  set energy energy + energy-gain-predator
 end
 
 ;; ENERGY MANAGEMENT
