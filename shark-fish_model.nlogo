@@ -366,7 +366,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-15.0
+73.0
 1
 1
 NIL
@@ -398,7 +398,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-12.0
+100.0
 1
 1
 NIL
@@ -428,7 +428,7 @@ shark-max-energy
 shark-max-energy
 0
 100
-40.0
+100.0
 1
 1
 NIL
@@ -443,7 +443,7 @@ max-turning
 max-turning
 1
 40
-22.0
+20.0
 1
 1
 NIL
@@ -482,10 +482,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-200
-412
-372
-445
+19
+375
+191
+408
 swim-stride
 swim-stride
 0.1
@@ -497,10 +497,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-18
-372
-190
-405
+24
+523
+194
+556
 initial-number-jellyfish
 initial-number-jellyfish
 0
@@ -512,10 +512,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-19
-412
-192
-445
+201
+522
+374
+555
 initial-number-algae-patches
 initial-number-algae-patches
 1
@@ -607,40 +607,40 @@ Setup Parameters\n
 1
 
 SLIDER
-17
-456
-189
-489
+201
+442
+373
+475
 energy-gain-prey
 energy-gain-prey
 1
 100
-65.0
+20.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-198
-458
-370
-491
+201
+482
+373
+515
 energy-gain-predator
 energy-gain-predator
 1
 100
-50.0
+30.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-20
-544
-192
-577
+24
+482
+193
+515
 algae-spawn-radius
 algae-spawn-radius
 1
@@ -652,10 +652,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-19
-502
-188
-535
+24
+442
+193
+475
 food-respawn-time
 food-respawn-time
 10
@@ -665,6 +665,35 @@ food-respawn-time
 1
 ticks
 HORIZONTAL
+
+TEXTBOX
+161
+418
+311
+436
+Food Parameters\n
+11
+0.0
+1
+
+PLOT
+24
+582
+224
+732
+plot 1
+time
+population
+0.0
+100.0
+0.0
+100.0
+true
+false
+"" ""
+PENS
+"fishes" 1.0 0 -4699768 true "" "plot count fishes"
+"sharks" 1.0 0 -14985354 true "" "plot count sharks"
 
 @#$#@#$#@
 ## WHAT IS IT?
