@@ -211,10 +211,10 @@ to turn-at-most [turn max-turn]  ;; turtle procedure
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+401
 10
-647
-448
+942
+552
 -1
 -1
 13.0
@@ -227,10 +227,10 @@ GRAPHICS-WINDOW
 1
 1
 1
--16
-16
--16
-16
+-20
+20
+-20
+20
 1
 1
 1
@@ -238,10 +238,10 @@ ticks
 30.0
 
 SLIDER
-11
-134
-183
-167
+18
+291
+190
+324
 initial-number-fishes
 initial-number-fishes
 1
@@ -253,10 +253,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-51
-46
-153
-79
+24
+58
+126
+91
 Setup
 setup
 NIL
@@ -270,10 +270,10 @@ NIL
 1
 
 SLIDER
-11
-174
-183
-207
+18
+331
+190
+364
 initial-number-sharks
 initial-number-sharks
 1
@@ -285,10 +285,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-214
-183
-247
+196
+291
+368
+324
 fish-max-energy
 fish-max-energy
 0
@@ -300,10 +300,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-255
-183
-288
+196
+332
+368
+365
 shark-max-energy
 shark-max-energy
 0
@@ -315,25 +315,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-13
-94
-185
-127
+198
+374
+370
+407
 max-turning
 max-turning
 1
 40
-39.0
+2.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-50
-10
-153
-43
+254
+58
+357
+91
 Go
 go
 T
@@ -347,25 +347,25 @@ NIL
 1
 
 SLIDER
-11
-293
-183
-326
+10
+164
+182
+197
 fish-vision
 fish-vision
-0
-100
-29.0
+1
+5
+5.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-11
-330
-183
-363
+200
+412
+372
+445
 swim-stride
 swim-stride
 0.1
@@ -377,25 +377,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-12
-377
-184
-410
+18
+372
+190
+405
 initial-number-jellyfish
 initial-number-jellyfish
 0
 100
-51.0
+13.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-12
-428
-184
-461
+19
+412
+191
+445
 initial-number-algae
 initial-number-algae
 0
@@ -407,10 +407,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-16
-471
-188
-504
+10
+124
+182
+157
 minimum-spread
 minimum-spread
 1
@@ -422,49 +422,69 @@ NIL
 HORIZONTAL
 
 SLIDER
-14
-515
-229
-548
+191
+124
+379
+157
 max-separate-turn
 max-separate-turn
 1
-360
-103.3
+90
+9.5
 0.1
 1
 degrees
 HORIZONTAL
 
 SLIDER
-32
-590
-222
-623
+188
+201
+380
+234
 max-align-turn
 max-align-turn
 1
-360
-97.4
+90
+42.2
 0.10
 1
 degrees
 HORIZONTAL
 
 SLIDER
-29
-549
-232
-582
+190
+163
+380
+196
 max-cohere-turn
 max-cohere-turn
 1
-360
-54.5
+90
+40.3
 0.10
 1
 degrees
 HORIZONTAL
+
+TEXTBOX
+144
+97
+297
+115
+Schooling Parameters
+11
+0.0
+1
+
+TEXTBOX
+156
+254
+306
+272
+Setup Parameters\n
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
