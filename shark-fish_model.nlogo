@@ -13,6 +13,7 @@ globals[
 fishes-own [energy move-distance max-energy
   health-status ;; for monitoring reproduction eligibility
   schoolmates
+  panic-timer ;; panic mode
   nearest-neighbor birth-tick]
 sharks-own [energy move-distance max-energy birth-tick]
 patches-own [patch-growth-countdown algae-patch alive]
@@ -35,7 +36,7 @@ to setup
     set-energy-color 128
     setxy random-xcor random-ycor
     set schoolmates no-turtles
-    set birth-tick random prey-age
+    set panic-timer 0
   ]
 
   set-default-shape sharks "shark"
@@ -46,7 +47,7 @@ to setup
     set-energy-color 98
     setxy random-xcor random-ycor
     set shark-reproduction-chance predator-tick-reproduction-chance
-    set birth-tick random predator-age
+    set birth-tick ticks
   ]
 
   set-default-shape algaes "plant"
@@ -87,7 +88,7 @@ to go
     ]
 
     if birth-tick >= predator-age [
-      if random-float 1.0 < 0.001 [
+      if random-float 1.0 < 0.015 [
         die
       ]
     ]
@@ -95,8 +96,8 @@ to go
 
   ask sharks [
     set birth-tick (birth-tick + 1)
-    if (birth-tick > predator-age / 4 and birth-tick > predator-reproduction-cycle and ticks mod predator-reproduction-cycle >= 0 and ticks mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  80) [
-      let nearby-sharks sharks in-radius predator-reproduction-radius  ; Assuming a small enough radius to detect nearby sharks
+    if (birth-tick > predator-reproduction-cycle and birth-tick mod predator-reproduction-cycle >= 0 and birth-tick mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  80) [
+      let nearby-sharks sharks in-radius 12  ; Assuming a small enough radius to detect nearby sharks
       let has-reproduced? false  ; Flag to track if the shark has reproduced
       ask nearby-sharks [
         if self != myself [
@@ -120,14 +121,27 @@ to go
   hungry-predator?
 
   ask fishes [
-    set birth-tick (birth-tick + 1)
-    ifelse (not hungry-prey?) [
-      school
-    ] [
-      hungry-prey-action
+
+    ifelse panic?
+    [
+      let nearby-sharks sharks in-radius fish-panic-vision
+      let nearest-shark min-one-of nearby-sharks [distance myself]
+
+      ifelse nearest-shark != NOBODY
+      [
+        turn-away ([heading] of nearest-shark) max-separate-turn
+      ]
+      [
+        set-direction
+        set panic-timer (panic-timer - 10)
+      ]
     ]
+    [
+      ifelse (not hungry-prey?) [ school ] [hungry-prey-action]
+    ]
+    set birth-tick (birth-tick + 1)
     if birth-tick >= prey-age [
-      if random-float 1.0 < 0.05 [
+      if random-float 1.0 < 0.02 [
         die
       ]
     ]
@@ -137,17 +151,17 @@ to go
     move
   ]
 
-  ask turtles [
-    if breed = fishes or breed = sharks
-    [
+  ask fishes [
+    ifelse panic? [set energy (energy - 2)] ;; lose double the energy when panicked cuz moving faster
+    [set energy (energy - 1)] ;; all entities lose 1 energy per tick
+    die?
+    set-health-status
+     reproduce-prey?
+  ]
+
+  ask sharks [
       set energy (energy - 1) ;; all entities lose 1 energy per tick
       die?
-    ]
-
-    if breed = fishes [
-      set-health-status
-      reproduce-prey?
-    ]
   ]
 
   respawn-food?
@@ -236,7 +250,14 @@ to hungry-predator?
 end
 
 to eat-predator
-  ask min-one-of (turtles-on patch-here) with [breed = fishes] [distance myself] [die]
+  ask min-one-of (turtles-on patch-here) with [breed = fishes] [distance myself]
+  [
+    let affected-fish fishes in-radius fish-vision
+    ask affected-fish [
+      set panic-timer panic-length
+    ]
+    die
+  ]
   set energy energy + energy-gain-predator
 end
 
@@ -259,14 +280,13 @@ end
 
 ;; REPRODUCTION FOR PREY
 to reproduce-prey?
-  if ((birth-tick > prey-age / 3) and (birth-tick > prey-reproduction-cycle) and (ticks mod prey-reproduction-cycle > 0) and (ticks mod prey-reproduction-cycle <= prey-reproduction-period))[
+  if ((birth-tick > prey-reproduction-cycle) and (birth-tick mod prey-reproduction-cycle > 0) and (birth-tick mod prey-reproduction-cycle <= prey-reproduction-period))[
     if(energy >= (max-energy / 2) and (health-status >= max-energy / 2) and random-chance-prey-reproduction?)[
       hatch 1 [
         setxy ([xcor] of myself + random-float 2 - 1)
               ([ycor] of myself + random-float 2 - 1)
         set birth-tick 0  ; Set the birth-tick of the new fish to 0
       ]
-      set energy (energy - 35)
     ]
   ]
 end
@@ -293,7 +313,8 @@ end
 
 to move
   ask fishes [
-    fd movement-constant
+    ifelse panic? [fd movement-constant * 2]
+    [fd movement-constant]
   ]
 
   ask sharks [
@@ -347,6 +368,7 @@ to-report average-schoolmate-heading  ;; turtle procedure
 end
 
 
+
 to cohere
   turn-towards average-heading-towards-schoolmates max-cohere-turn
 end
@@ -381,6 +403,13 @@ to turn-at-most [turn max-turn]  ;; turtle procedure
         [ lt max-turn ] ]
     [ rt turn ]
 end
+
+;; Panic
+
+to-report panic?
+  report panic-timer > 0
+end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 401
@@ -418,7 +447,7 @@ initial-number-fishes
 initial-number-fishes
 1
 150
-120.0
+29.0
 1
 1
 NIL
@@ -450,7 +479,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-10.0
+4.0
 1
 1
 NIL
@@ -682,7 +711,7 @@ energy-gain-predator
 energy-gain-predator
 1
 100
-65.0
+70.0
 1
 1
 NIL
@@ -712,7 +741,7 @@ food-respawn-time
 food-respawn-time
 10
 100
-45.0
+40.0
 1
 1
 ticks
@@ -766,7 +795,7 @@ prey-reproduction-cycle
 prey-reproduction-cycle
 150
 1000
-150.0
+200.0
 50
 1
 NIL
@@ -811,7 +840,7 @@ predator-reproduction-cycle
 predator-reproduction-cycle
 200
 1400
-900.0
+800.0
 50
 1
 NIL
@@ -826,7 +855,7 @@ predator-reproduction-period
 predator-reproduction-period
 100
 450
-260.0
+300.0
 10
 1
 NIL
@@ -841,7 +870,7 @@ prey-age
 prey-age
 100
 800
-400.0
+300.0
 50
 1
 NIL
@@ -857,7 +886,7 @@ predator-age
 500
 3000
 1800.0
-50
+100
 1
 NIL
 HORIZONTAL
@@ -871,44 +900,41 @@ predator-tick-reproduction-chance
 predator-tick-reproduction-chance
 0.0001
 0.05
-0.0023
+0.05
 0.0001
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1207
-282
-1407
-315
-predator-reproduction-radius
-predator-reproduction-radius
+978
+374
+1150
+407
+panic-length
+panic-length
 1
-15
-12.0
+100
+100.0
+1
+1
+ticks
+HORIZONTAL
+
+SLIDER
+8
+202
+180
+235
+fish-panic-vision
+fish-panic-vision
+1
+5
+2.0
 1
 1
 NIL
 HORIZONTAL
-
-PLOT
-263
-589
-463
-739
-sharks
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -13791810 true "" "plot count sharks"
 
 @#$#@#$#@
 ## WHAT IS IT?
