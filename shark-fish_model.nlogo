@@ -150,8 +150,8 @@ to go
     set birth-tick (birth-tick + 1)
     if birth-tick >= prey-age [
       if random-float 1.0 < 0.02 [
-        die
         set fish-aged fish-aged + 1
+        die
       ]
     ]
   ]
@@ -214,6 +214,21 @@ to respawn-food?
     ]
     [
       set patch-growth-countdown patch-growth-countdown - 1
+    ]
+  ]
+
+  if count jellyfishes < initial-number-jellyfish
+  [
+    if random-float 1.0 < 0.2
+    [
+      ask patch random-xcor random-ycor
+      [sprout-jellyfishes 1
+        [
+          set size 0.4
+          set color green
+        ]
+      ]
+
     ]
   ]
 end
@@ -600,7 +615,7 @@ initial-number-jellyfish
 initial-number-jellyfish
 0
 100
-52.0
+70.0
 1
 1
 NIL
@@ -615,7 +630,7 @@ initial-number-algae-patches
 initial-number-algae-patches
 1
 20
-16.0
+5.0
 1
 1
 NIL
@@ -710,7 +725,7 @@ energy-gain-prey
 energy-gain-prey
 1
 100
-55.0
+40.0
 1
 1
 NIL
@@ -725,7 +740,7 @@ energy-gain-predator
 energy-gain-predator
 1
 100
-70.0
+100.0
 1
 1
 NIL
@@ -740,7 +755,7 @@ algae-spawn-radius
 algae-spawn-radius
 1
 20
-9.0
+7.0
 1
 1
 NIL
@@ -789,6 +804,7 @@ false
 PENS
 "fishes" 1.0 0 -4699768 true "" "plot count fishes"
 "sharks" 1.0 0 -14985354 true "" "plot count sharks"
+"food" 1.0 0 -11085214 true "" "plot count jellyfishes + count algaes"
 
 TEXTBOX
 1003
@@ -809,7 +825,7 @@ prey-reproduction-cycle
 prey-reproduction-cycle
 150
 1000
-200.0
+650.0
 50
 1
 NIL
@@ -824,7 +840,7 @@ prey-reproduction-period
 prey-reproduction-period
 1
 150
-63.0
+150.0
 1
 1
 NIL
@@ -833,7 +849,7 @@ HORIZONTAL
 SLIDER
 971
 212
-1175
+1152
 245
 prey-mean-ticks-reproduction
 prey-mean-ticks-reproduction
@@ -846,9 +862,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-1202
+1156
 131
-1403
+1357
 164
 predator-reproduction-cycle
 predator-reproduction-cycle
@@ -861,9 +877,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-1202
+1156
 172
-1405
+1359
 205
 predator-reproduction-period
 predator-reproduction-period
@@ -876,25 +892,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-972
-263
-1144
-296
+971
+286
+1150
+319
 prey-age
 prey-age
 100
 800
-300.0
+800.0
 50
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1205
-263
-1377
-296
+1155
+288
+1327
+321
 predator-age
 predator-age
 500
@@ -906,9 +922,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-1202
+1156
 213
-1446
+1360
 246
 predator-tick-reproduction-chance
 predator-tick-reproduction-chance
@@ -921,15 +937,15 @@ NIL
 HORIZONTAL
 
 SLIDER
-1159
-556
-1331
-589
+1231
+370
+1403
+403
 panic-length
 panic-length
 1
 100
-10.0
+100.0
 1
 1
 ticks
@@ -944,7 +960,7 @@ fish-panic-vision
 fish-panic-vision
 1
 5
-2.0
+1.0
 1
 1
 NIL
@@ -959,7 +975,7 @@ predator-hunger-min
 predator-hunger-min
 0.1
 1
-0.6
+0.2
 0.1
 1
 * max-energy
@@ -974,17 +990,17 @@ prey-hunger-min
 prey-hunger-min
 0.1
 1
-1.0
+0.7
 0.1
 1
 * max-energy
 HORIZONTAL
 
 TEXTBOX
-1021
-349
-1171
-367
+1004
+338
+1154
+356
 Energy amount before hungry
 11
 0.0
@@ -999,9 +1015,9 @@ Fish Death Analysis
 time
 CoD
 0.0
-100.0
+10.0
 0.0
-100.0
+10.0
 true
 false
 "" ""
