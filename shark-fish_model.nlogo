@@ -24,6 +24,7 @@ breed [algaes algae]
 breed [jellyfishes jellyfish]
 to setup
   clear-all
+  reset-ticks
 
   set-default-shape fishes "fish"
   create-fishes initial-number-fishes [
@@ -43,7 +44,8 @@ to setup
     set energy (1 + random max-energy)
     set-energy-color 98
     setxy random-xcor random-ycor
-    set shark-reproduction-chance  0.3
+    set shark-reproduction-chance 0.2
+    ;set birth-tick ticks
   ]
 
   set-default-shape algaes "plant"
@@ -65,7 +67,7 @@ to setup
     set pcolor 101
   ]
 
-  reset-ticks
+  ;reset-ticks
 end
 
 to go
@@ -270,7 +272,7 @@ to move
             set max-energy max-energy
           ]
           set energy (energy -   30)  ; Reduce energy of the parent shark
-          set has-reproduced? true  ; Set the flag to indicate reproduction has occurred
+          ;set has-reproduced? true  ; Set the flag to indicate reproduction has occurred
         ]
       ]
     ]
@@ -394,7 +396,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-4.0
+65.0
 1
 1
 NIL
@@ -426,7 +428,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-29.0
+16.0
 1
 1
 NIL
@@ -548,7 +550,7 @@ initial-number-algae-patches
 initial-number-algae-patches
 1
 20
-5.0
+16.0
 1
 1
 NIL
@@ -593,7 +595,7 @@ max-align-turn
 max-align-turn
 1
 90
-29.6
+29.0
 0.10
 1
 degrees
@@ -643,7 +645,7 @@ energy-gain-prey
 energy-gain-prey
 1
 100
-60.0
+50.0
 1
 1
 NIL
@@ -658,7 +660,7 @@ energy-gain-predator
 energy-gain-predator
 1
 100
-50.0
+60.0
 1
 1
 NIL
@@ -688,7 +690,7 @@ food-respawn-time
 food-respawn-time
 10
 100
-50.0
+35.0
 1
 1
 ticks
@@ -742,7 +744,7 @@ prey-reproduction-cycle
 prey-reproduction-cycle
 150
 1000
-450.0
+250.0
 50
 1
 NIL
@@ -772,7 +774,7 @@ prey-mean-ticks-reproduction
 prey-mean-ticks-reproduction
 30
 500
-150.0
+90.0
 10
 1
 NIL
