@@ -8,6 +8,10 @@ globals[
 
   max-fish             ; max number of fish we can have on the board
   shark-reproduction-chance ; chance for sharks to reproduce upon collision
+
+  fish-eaten
+  fish-starved
+  fish-aged
 ]
 
 fishes-own [energy move-distance max-energy
@@ -26,6 +30,10 @@ breed [jellyfishes jellyfish]
 to setup
   clear-all
   reset-ticks
+
+  set fish-eaten 0
+  set fish-starved 0
+  set fish-aged 0
 
   set-default-shape fishes "fish"
   create-fishes initial-number-fishes [
@@ -143,6 +151,7 @@ to go
     if birth-tick >= prey-age [
       if random-float 1.0 < 0.02 [
         die
+        set fish-aged fish-aged + 1
       ]
     ]
   ]
@@ -154,6 +163,7 @@ to go
   ask fishes [
     ifelse panic? [set energy (energy - 2)] ;; lose double the energy when panicked cuz moving faster
     [set energy (energy - 1)] ;; all entities lose 1 energy per tick
+    if energy <= 0 [set fish-starved fish-starved + 1]
     die?
     set-health-status
      reproduce-prey?
@@ -259,6 +269,7 @@ to eat-predator
     ask affected-fish [
       set panic-timer panic-length
     ]
+    set fish-eaten fish-eaten + 1
     die
   ]
   set energy energy + energy-gain-predator
@@ -763,9 +774,9 @@ Food Parameters\n
 PLOT
 24
 582
-224
+542
 732
-plot 1
+Population Graph
 time
 population
 0.0
@@ -978,6 +989,26 @@ Energy amount before hungry
 11
 0.0
 1
+
+PLOT
+625
+587
+1010
+729
+Fish Death Analysis
+time
+CoD
+0.0
+100.0
+0.0
+100.0
+true
+false
+"" ""
+PENS
+"starved" 1.0 0 -5298144 true "" "plot fish-starved"
+"eaten" 1.0 0 -14070903 true "" "plot fish-eaten"
+"aged" 1.0 0 -7500403 true "" "plot fish-aged"
 
 @#$#@#$#@
 ## WHAT IS IT?
