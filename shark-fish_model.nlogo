@@ -229,7 +229,7 @@ to hungry-prey-action
 end
 
 to-report hungry-prey?
-  report energy <= (max-energy / 2)
+  report energy <= (max-energy * prey-hunger-min)
 end
 
 to eat-prey
@@ -247,7 +247,7 @@ end
 to hungry-predator?
   ask sharks [
      if any? (turtles-on patch-here) with [breed = fishes] [
-      if energy <= (max-energy / 2) [eat-predator]
+      if energy <= (max-energy * predator-hunger-min) [eat-predator]
     ]
   ]
 end
@@ -865,10 +865,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-973
-324
-1145
-357
+972
+263
+1144
+296
 prey-age
 prey-age
 100
@@ -880,10 +880,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1206
-324
-1378
-357
+1205
+263
+1377
+296
 predator-age
 predator-age
 500
@@ -910,10 +910,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-978
-374
-1150
-407
+1159
+556
+1331
+589
 panic-length
 panic-length
 1
@@ -938,6 +938,46 @@ fish-panic-vision
 1
 NIL
 HORIZONTAL
+
+SLIDER
+973
+369
+1216
+402
+predator-hunger-min
+predator-hunger-min
+0.1
+1
+0.6
+0.1
+1
+* max-energy
+HORIZONTAL
+
+SLIDER
+973
+408
+1216
+441
+prey-hunger-min
+prey-hunger-min
+0.1
+1
+1.0
+0.1
+1
+* max-energy
+HORIZONTAL
+
+TEXTBOX
+1021
+349
+1171
+367
+Energy amount before hungry
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
