@@ -39,7 +39,7 @@ to setup
 
   set-default-shape sharks "shark"
   create-sharks initial-number-sharks [
-    set size 2.5
+    set size 1.5
     set max-energy shark-max-energy
     set energy (1 + random max-energy)
     set-energy-color 98
@@ -58,9 +58,9 @@ to setup
   set-default-shape jellyfishes "default"
   create-jellyfishes initial-number-jellyfish
   [
-    set size 0.7
+    set size 0.4
     setxy random-xcor random-ycor
-    set color white
+    set color green
   ]
 
   ask patches [
@@ -85,14 +85,16 @@ to go
       ]
     ]
 
-    if ticks - birth-tick >= 800 [
-      die
+    if ticks - birth-tick >= 1000 [
+      if random-float 1.0 < 0.01 [
+        die
+      ]
     ]
   ]
 
   ask sharks [
-    if ticks - birth-tick >=  600 and energy >=  70 [
-      let nearby-sharks sharks in-radius 5  ; Assuming a small enough radius to detect nearby sharks
+    if ticks - birth-tick >= 800 and energy >=  80 [
+      let nearby-sharks sharks in-radius 10  ; Assuming a small enough radius to detect nearby sharks
       let has-reproduced? false  ; Flag to track if the shark has reproduced
       ask nearby-sharks [
         if self != myself [
@@ -407,7 +409,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-60.0
+62.0
 1
 1
 NIL
@@ -439,7 +441,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-15.0
+16.0
 1
 1
 NIL
@@ -484,7 +486,7 @@ max-turning
 max-turning
 1
 40
-20.0
+22.0
 1
 1
 NIL
@@ -671,7 +673,7 @@ energy-gain-predator
 energy-gain-predator
 1
 100
-60.0
+70.0
 1
 1
 NIL
@@ -701,7 +703,7 @@ food-respawn-time
 food-respawn-time
 10
 100
-35.0
+40.0
 1
 1
 ticks
