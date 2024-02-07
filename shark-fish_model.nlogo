@@ -177,12 +177,15 @@ end
 to set-algae-patches [target-patch]
   let algae-patches patches with [distance target-patch < algae-spawn-radius]
   ask algae-patches [
-    set algae-patch true
-    set alive true
-    sprout-algaes 1
+    if algae-patch != true ;; only put algae if there isn't algae there already
     [
-      set color green
-      set size 0.4
+      set algae-patch true
+      set alive true
+      sprout-algaes 1
+      [
+        set color green
+        set size 0.4
+      ]
     ]
   ]
 end
@@ -447,7 +450,7 @@ initial-number-fishes
 initial-number-fishes
 1
 150
-29.0
+150.0
 1
 1
 NIL
@@ -479,7 +482,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-4.0
+10.0
 1
 1
 NIL
@@ -726,7 +729,7 @@ algae-spawn-radius
 algae-spawn-radius
 1
 20
-4.0
+9.0
 1
 1
 NIL
@@ -810,7 +813,7 @@ prey-reproduction-period
 prey-reproduction-period
 1
 150
-120.0
+63.0
 1
 1
 NIL
@@ -915,7 +918,7 @@ panic-length
 panic-length
 1
 100
-100.0
+10.0
 1
 1
 ticks
