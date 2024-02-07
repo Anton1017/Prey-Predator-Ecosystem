@@ -106,7 +106,7 @@ to go
 
   ask sharks [
     set birth-tick (birth-tick + 1)
-    if (birth-tick > predator-reproduction-cycle and birth-tick mod predator-reproduction-cycle >= 0 and birth-tick mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  80) [
+    if (birth-tick > predator-reproduction-cycle and birth-tick mod predator-reproduction-cycle >= 0 and birth-tick mod predator-reproduction-cycle < predator-reproduction-period) and (predator-energy-requirement >=  80) [
       let nearby-sharks sharks in-radius 12  ; Assuming a small enough radius to detect nearby sharks
       let has-reproduced? false  ; Flag to track if the shark has reproduced
       ask nearby-sharks [
@@ -440,7 +440,6 @@ end
 to-report panic?
   report panic-timer > 0
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 486
@@ -510,7 +509,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-40.0
+20.0
 1
 1
 NIL
@@ -727,7 +726,7 @@ energy-gain-prey
 energy-gain-prey
 1
 100
-80.0
+60.0
 1
 1
 NIL
@@ -742,7 +741,7 @@ energy-gain-predator
 energy-gain-predator
 1
 100
-100.0
+70.0
 1
 1
 NIL
@@ -757,7 +756,7 @@ algae-spawn-radius
 algae-spawn-radius
 1
 20
-9.0
+7.0
 1
 1
 NIL
@@ -772,7 +771,7 @@ food-respawn-time
 food-respawn-time
 10
 100
-73.0
+70.0
 1
 1
 ticks
@@ -857,7 +856,7 @@ prey-mean-ticks-reproduction
 prey-mean-ticks-reproduction
 30
 500
-270.0
+150.0
 10
 1
 NIL
@@ -872,7 +871,7 @@ predator-reproduction-cycle
 predator-reproduction-cycle
 200
 1400
-200.0
+500.0
 50
 1
 NIL
@@ -932,7 +931,7 @@ predator-tick-reproduction-chance
 predator-tick-reproduction-chance
 0.0001
 0.05
-0.035
+0.0249
 0.0001
 1
 NIL
@@ -947,7 +946,7 @@ panic-length
 panic-length
 1
 100
-100.0
+50.0
 1
 1
 ticks
@@ -1027,6 +1026,21 @@ PENS
 "starved" 1.0 0 -5298144 true "" "plot fish-starved"
 "eaten" 1.0 0 -14070903 true "" "plot fish-eaten"
 "aged" 1.0 0 -7500403 true "" "plot fish-aged"
+
+SLIDER
+764
+751
+964
+784
+predator-energy-requirement
+predator-energy-requirement
+5
+100
+80.0
+5
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
