@@ -87,7 +87,7 @@ to go
     ]
 
     if birth-tick >= predator-age [
-      if random-float 1.0 < 0.015 [
+      if random-float 1.0 < 0.001 [
         die
       ]
     ]
@@ -127,7 +127,7 @@ to go
       hungry-prey-action
     ]
     if birth-tick >= prey-age [
-      if random-float 1.0 < 0.02 [
+      if random-float 1.0 < 0.05 [
         die
       ]
     ]
@@ -266,6 +266,7 @@ to reproduce-prey?
               ([ycor] of myself + random-float 2 - 1)
         set birth-tick 0  ; Set the birth-tick of the new fish to 0
       ]
+      set energy (energy - 35)
     ]
   ]
 end
@@ -765,7 +766,7 @@ prey-reproduction-cycle
 prey-reproduction-cycle
 150
 1000
-200.0
+150.0
 50
 1
 NIL
@@ -810,7 +811,7 @@ predator-reproduction-cycle
 predator-reproduction-cycle
 200
 1400
-800.0
+900.0
 50
 1
 NIL
@@ -825,7 +826,7 @@ predator-reproduction-period
 predator-reproduction-period
 100
 450
-300.0
+260.0
 10
 1
 NIL
@@ -855,7 +856,7 @@ predator-age
 predator-age
 500
 3000
-1250.0
+1800.0
 50
 1
 NIL
@@ -870,7 +871,7 @@ predator-tick-reproduction-chance
 predator-tick-reproduction-chance
 0.0001
 0.05
-0.0032
+0.0023
 0.0001
 1
 NIL
@@ -885,11 +886,29 @@ predator-reproduction-radius
 predator-reproduction-radius
 1
 15
-15.0
+12.0
 1
 1
 NIL
 HORIZONTAL
+
+PLOT
+263
+589
+463
+739
+sharks
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -13791810 true "" "plot count sharks"
 
 @#$#@#$#@
 ## WHAT IS IT?
