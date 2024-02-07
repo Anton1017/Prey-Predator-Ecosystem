@@ -72,7 +72,14 @@ to go
   set movement-constant swim-stride
   ask sharks [
     set-direction
-
+    if energy <  50 [
+      ; Homing behavior for sharks when energy is below  50
+      let closest-fish min-one-of fishes [distance myself]
+      if closest-fish != nobody [
+        face closest-fish
+        fd movement-constant
+      ]
+    ]
   ]
 
 
@@ -398,7 +405,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-100.0
+5.0
 1
 1
 NIL
