@@ -218,9 +218,9 @@ end
 
 ;; REPRODUCTION FOR PREY
 to reproduce-prey?
-  ;; simulate annual reproduction every 1000 ticks
-  if (ticks mod 1000 = 0)[
-    if(energy >= (max-energy / 2) and (health-status >= max-energy / 2))[
+  ;; simulate annual reproduction every 1000 ticks and between period of 60 ticks
+  if ((ticks mod prey-reproduction-cycle > 0) and (ticks mod prey-reproduction-cycle <= prey-reproduction-period))[
+    if(energy >= (max-energy / 2) and (health-status >= max-energy / 2) and random-chance-prey-reproduction?)[
       hatch 1 [
         setxy ([xcor] of myself + random-float 2 - 1)
               ([ycor] of myself + random-float 2 - 1)
@@ -236,6 +236,10 @@ to set-health-status
   if (energy < ( max-energy / 2 ) and (health-status > 0))[
     set health-status (health-status - 3)
   ]
+end
+
+to-report random-chance-prey-reproduction?
+  report random prey-mean-ticks-reproduction = 0
 end
 
 ;; MOVEMENT
@@ -372,7 +376,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-73.0
+4.0
 1
 1
 NIL
@@ -556,7 +560,7 @@ max-separate-turn
 max-separate-turn
 1
 90
-9.5
+9.8
 0.1
 1
 degrees
@@ -571,7 +575,7 @@ max-align-turn
 max-align-turn
 1
 90
-28.2
+29.6
 0.10
 1
 degrees
@@ -586,7 +590,7 @@ max-cohere-turn
 max-cohere-turn
 1
 90
-29.0
+29.5
 0.10
 1
 degrees
@@ -621,7 +625,7 @@ energy-gain-prey
 energy-gain-prey
 1
 100
-20.0
+60.0
 1
 1
 NIL
@@ -700,6 +704,61 @@ false
 PENS
 "fishes" 1.0 0 -4699768 true "" "plot count fishes"
 "sharks" 1.0 0 -14985354 true "" "plot count sharks"
+
+TEXTBOX
+1003
+101
+1153
+119
+Reproduction Parameters
+10
+0.0
+1
+
+SLIDER
+971
+130
+1150
+163
+prey-reproduction-cycle
+prey-reproduction-cycle
+150
+1000
+450.0
+50
+1
+NIL
+HORIZONTAL
+
+SLIDER
+971
+171
+1151
+204
+prey-reproduction-period
+prey-reproduction-period
+1
+150
+120.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+971
+212
+1175
+245
+prey-mean-ticks-reproduction
+prey-mean-ticks-reproduction
+30
+500
+150.0
+10
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
