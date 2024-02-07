@@ -44,7 +44,7 @@ to setup
     set energy (1 + random max-energy)
     set-energy-color 98
     setxy random-xcor random-ycor
-    set shark-reproduction-chance 0.01
+    set shark-reproduction-chance predator-tick-reproduction-chance
     set birth-tick ticks
   ]
 
@@ -85,16 +85,17 @@ to go
       ]
     ]
 
-    if ticks - birth-tick >= predator-age [
-      if random-float 1.0 < 0.005 [
+    if birth-tick >= predator-age [
+      if random-float 1.0 < 0.015 [
         die
       ]
     ]
   ]
 
   ask sharks [
-    if (ticks > predator-reproduction-cycle and ticks mod predator-reproduction-cycle >= 0 and ticks mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  80) [
-      let nearby-sharks sharks in-radius 10  ; Assuming a small enough radius to detect nearby sharks
+    set birth-tick (birth-tick + 1)
+    if (birth-tick > predator-reproduction-cycle and birth-tick mod predator-reproduction-cycle >= 0 and birth-tick mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  80) [
+      let nearby-sharks sharks in-radius 12  ; Assuming a small enough radius to detect nearby sharks
       let has-reproduced? false  ; Flag to track if the shark has reproduced
       ask nearby-sharks [
         if self != myself [
@@ -118,13 +119,14 @@ to go
   hungry-predator?
 
   ask fishes [
+    set birth-tick (birth-tick + 1)
     ifelse (not hungry-prey?) [
       school
     ] [
       hungry-prey-action
     ]
-    if ticks - birth-tick >= prey-age [
-      if random-float 1.0 < 0.003 [
+    if birth-tick >= prey-age [
+      if random-float 1.0 < 0.02 [
         die
       ]
     ]
@@ -256,8 +258,7 @@ end
 
 ;; REPRODUCTION FOR PREY
 to reproduce-prey?
-  ;; simulate annual reproduction every 1000 ticks and between period of 60 ticks
-  if ((ticks > prey-reproduction-cycle) and (ticks mod prey-reproduction-cycle > 0) and (ticks mod prey-reproduction-cycle <= prey-reproduction-period))[
+  if ((birth-tick > prey-reproduction-cycle) and (birth-tick mod prey-reproduction-cycle > 0) and (birth-tick mod prey-reproduction-cycle <= prey-reproduction-period))[
     if(energy >= (max-energy / 2) and (health-status >= max-energy / 2) and random-chance-prey-reproduction?)[
       hatch 1 [
         setxy ([xcor] of myself + random-float 2 - 1)
@@ -414,8 +415,8 @@ SLIDER
 initial-number-fishes
 initial-number-fishes
 1
-100
-73.0
+150
+99.0
 1
 1
 NIL
@@ -447,7 +448,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-6.0
+7.0
 1
 1
 NIL
@@ -664,7 +665,7 @@ energy-gain-prey
 energy-gain-prey
 1
 100
-50.0
+55.0
 1
 1
 NIL
@@ -763,7 +764,7 @@ prey-reproduction-cycle
 prey-reproduction-cycle
 150
 1000
-250.0
+200.0
 50
 1
 NIL
@@ -838,7 +839,7 @@ prey-age
 prey-age
 100
 800
-350.0
+400.0
 50
 1
 NIL
@@ -853,8 +854,23 @@ predator-age
 predator-age
 500
 3000
-2000.0
+1800.0
 100
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1202
+213
+1446
+246
+predator-tick-reproduction-chance
+predator-tick-reproduction-chance
+0.0001
+0.05
+0.0032
+0.0001
 1
 NIL
 HORIZONTAL
