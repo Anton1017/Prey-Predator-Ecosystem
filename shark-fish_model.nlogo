@@ -94,8 +94,8 @@ to go
 
   ask sharks [
     set birth-tick (birth-tick + 1)
-    if (birth-tick > predator-reproduction-cycle and birth-tick mod predator-reproduction-cycle >= 0 and birth-tick mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  80) [
-      let nearby-sharks sharks in-radius 12  ; Assuming a small enough radius to detect nearby sharks
+    if (birth-tick > predator-reproduction-cycle and birth-tick mod predator-reproduction-cycle >= 0 and birth-tick mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  90) [
+      let nearby-sharks sharks in-radius predator-reproduction-radius  ; Assuming a small enough radius to detect nearby sharks
       let has-reproduced? false  ; Flag to track if the shark has reproduced
       ask nearby-sharks [
         if self != myself [
@@ -695,7 +695,7 @@ algae-spawn-radius
 algae-spawn-radius
 1
 20
-4.0
+5.0
 1
 1
 NIL
@@ -854,7 +854,7 @@ predator-age
 predator-age
 500
 3000
-1800.0
+1500.0
 100
 1
 NIL
@@ -871,6 +871,21 @@ predator-tick-reproduction-chance
 0.05
 0.0032
 0.0001
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1207
+282
+1407
+315
+predator-reproduction-radius
+predator-reproduction-radius
+1
+15
+10.0
+1
 1
 NIL
 HORIZONTAL
