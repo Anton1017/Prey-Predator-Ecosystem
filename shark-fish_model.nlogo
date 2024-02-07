@@ -35,6 +35,7 @@ to setup
     set-energy-color 128
     setxy random-xcor random-ycor
     set schoolmates no-turtles
+    set birth-tick random prey-age
   ]
 
   set-default-shape sharks "shark"
@@ -45,7 +46,7 @@ to setup
     set-energy-color 98
     setxy random-xcor random-ycor
     set shark-reproduction-chance predator-tick-reproduction-chance
-    set birth-tick ticks
+    set birth-tick random predator-age
   ]
 
   set-default-shape algaes "plant"
@@ -94,7 +95,7 @@ to go
 
   ask sharks [
     set birth-tick (birth-tick + 1)
-    if (birth-tick > predator-reproduction-cycle and birth-tick mod predator-reproduction-cycle >= 0 and birth-tick mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  80) [
+    if (birth-tick > predator-age / 4 and birth-tick > predator-reproduction-cycle and ticks mod predator-reproduction-cycle >= 0 and ticks mod predator-reproduction-cycle < predator-reproduction-period) and (energy >=  80) [
       let nearby-sharks sharks in-radius predator-reproduction-radius  ; Assuming a small enough radius to detect nearby sharks
       let has-reproduced? false  ; Flag to track if the shark has reproduced
       ask nearby-sharks [
@@ -258,7 +259,7 @@ end
 
 ;; REPRODUCTION FOR PREY
 to reproduce-prey?
-  if ((birth-tick > prey-reproduction-cycle) and (birth-tick mod prey-reproduction-cycle > 0) and (birth-tick mod prey-reproduction-cycle <= prey-reproduction-period))[
+  if ((birth-tick > prey-age / 3) and (birth-tick > prey-reproduction-cycle) and (ticks mod prey-reproduction-cycle > 0) and (ticks mod prey-reproduction-cycle <= prey-reproduction-period))[
     if(energy >= (max-energy / 2) and (health-status >= max-energy / 2) and random-chance-prey-reproduction?)[
       hatch 1 [
         setxy ([xcor] of myself + random-float 2 - 1)
