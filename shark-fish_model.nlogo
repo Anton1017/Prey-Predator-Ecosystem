@@ -7,6 +7,7 @@ globals[
   movement-constant;
 
   max-fish             ; max number of fish we can have on the board
+  shark-reproduction-chance ; chance for sharks to reproduce upon collision
 ]
 
 fishes-own [energy move-distance max-energy
@@ -42,6 +43,7 @@ to setup
     set energy (1 + random max-energy)
     set-energy-color 98
     setxy random-xcor random-ycor
+    set shark-reproduction-chance  0.3
   ]
 
   set-default-shape algaes "plant"
@@ -254,8 +256,24 @@ to move
     fd movement-constant
   ]
 
-    ask sharks [
+  ask sharks [
     fd movement-constant
+    let nearby-sharks sharks in-radius   1  ; Assuming a small enough radius to detect nearby sharks
+    let has-reproduced? false  ; Flag to track if the shark has reproduced
+    ask nearby-sharks [
+      if self != myself and energy >=   90 and not has-reproduced? [
+        if random-float   1.0 < shark-reproduction-chance [
+          hatch   1 [
+            setxy ([xcor] of myself + random-float   2 -   1)
+                  ([ycor] of myself + random-float   2 -   1)
+            set energy (energy /   2)  ; Sharing energy equally between parent and offspring
+            set max-energy max-energy
+          ]
+          set energy (energy -   30)  ; Reduce energy of the parent shark
+          set has-reproduced? true  ; Set the flag to indicate reproduction has occurred
+        ]
+      ]
+    ]
   ]
 
     ask jellyfishes [
@@ -408,7 +426,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-5.0
+29.0
 1
 1
 NIL
