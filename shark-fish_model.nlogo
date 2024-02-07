@@ -12,6 +12,9 @@ globals[
   fish-eaten
   fish-starved
   fish-aged
+
+  shark-aged
+  shark-starved
 ]
 
 fishes-own [energy move-distance max-energy
@@ -34,6 +37,9 @@ to setup
   set fish-eaten 0
   set fish-starved 0
   set fish-aged 0
+
+  set shark-aged 0
+  set shark-starved 0
 
   set-default-shape fishes "fish"
   create-fishes initial-number-fishes [
@@ -99,6 +105,7 @@ to go
 
     if birth-tick >= predator-age [
       if random-float 1.0 < 0.015 [
+        set shark-aged shark-aged + 1
         die
       ]
     ]
@@ -173,6 +180,7 @@ to go
 
   ask sharks [
       set energy (energy - 1) ;; all entities lose 1 energy per tick
+      if energy <= 0 [set shark-starved shark-starved + 1]
       die?
   ]
 
@@ -442,10 +450,10 @@ to-report panic?
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-486
-33
-1547
-575
+394
+32
+1455
+574
 -1
 -1
 13.0
@@ -790,7 +798,7 @@ Food Parameters\n
 PLOT
 28
 586
-548
+684
 808
 Population Graph
 time
@@ -808,20 +816,20 @@ PENS
 "food" 1.0 0 -11085214 true "" "plot count jellyfishes + count algaes"
 
 TEXTBOX
-606
-583
-756
-601
+1506
+43
+1656
+61
 Reproduction Parameters
 10
 0.0
 1
 
 SLIDER
-574
-612
-753
-645
+1474
+72
+1653
+105
 prey-reproduction-cycle
 prey-reproduction-cycle
 150
@@ -833,10 +841,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-574
-653
-754
-686
+1474
+113
+1654
+146
 prey-reproduction-period
 prey-reproduction-period
 1
@@ -848,10 +856,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-574
-694
-755
-727
+1474
+154
+1655
+187
 prey-mean-ticks-reproduction
 prey-mean-ticks-reproduction
 30
@@ -863,10 +871,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-759
-613
-960
-646
+1659
+73
+1860
+106
 predator-reproduction-cycle
 predator-reproduction-cycle
 200
@@ -878,10 +886,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-759
-654
-962
-687
+1659
+114
+1862
+147
 predator-reproduction-period
 predator-reproduction-period
 100
@@ -893,10 +901,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1399
-598
-1578
-631
+1468
+432
+1647
+465
 prey-age
 prey-age
 100
@@ -908,10 +916,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1583
-600
-1755
-633
+1661
+432
+1833
+465
 predator-age
 predator-age
 500
@@ -923,10 +931,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-759
-695
-963
-728
+1659
+155
+1863
+188
 predator-tick-reproduction-chance
 predator-tick-reproduction-chance
 0.0001
@@ -938,10 +946,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1402
-746
-1574
-779
+1467
+502
+1639
+535
 panic-length
 panic-length
 1
@@ -953,10 +961,10 @@ ticks
 HORIZONTAL
 
 SLIDER
-8
-202
-180
-235
+1659
+501
+1831
+534
 fish-panic-vision
 fish-panic-vision
 1
@@ -968,10 +976,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1402
-664
-1645
-697
+1471
+323
+1714
+356
 predator-hunger-min
 predator-hunger-min
 0.1
@@ -983,10 +991,10 @@ predator-hunger-min
 HORIZONTAL
 
 SLIDER
-1402
-700
-1645
-733
+1471
+359
+1714
+392
 prey-hunger-min
 prey-hunger-min
 0.1
@@ -998,20 +1006,20 @@ prey-hunger-min
 HORIZONTAL
 
 TEXTBOX
-1432
-650
-1582
-668
+1501
+309
+1651
+327
 Energy amount before hungry
 11
 0.0
 1
 
 PLOT
-980
-587
-1365
-804
+734
+591
+1408
+808
 Fish Death Analysis
 time
 cause of death
@@ -1028,10 +1036,10 @@ PENS
 "aged" 1.0 0 -7500403 true "" "plot fish-aged"
 
 SLIDER
-761
-736
-961
-769
+1661
+196
+1861
+229
 predator-energy-requirement
 predator-energy-requirement
 5
@@ -1043,10 +1051,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-759
-777
-953
-810
+1663
+234
+1857
+267
 predator-reproduction-radius
 predator-reproduction-radius
 1
@@ -1056,6 +1064,45 @@ predator-reproduction-radius
 1
 NIL
 HORIZONTAL
+
+PLOT
+1422
+587
+1846
+801
+Shark Death Analysis
+time
+cause of death
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"starved" 1.0 0 -5298144 true "" "plot shark-starved"
+"aged" 1.0 0 -7500403 true "" "plot shark-aged"
+
+TEXTBOX
+1504
+409
+1654
+427
+Age Control
+11
+0.0
+1
+
+TEXTBOX
+1500
+481
+1650
+499
+Fish Panic Controls
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
