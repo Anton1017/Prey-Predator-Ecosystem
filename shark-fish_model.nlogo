@@ -39,7 +39,7 @@ to setup
 
   set-default-shape sharks "shark"
   create-sharks initial-number-sharks [
-    set size 1.5
+    set size 2.5
     set max-energy shark-max-energy
     set energy (1 + random max-energy)
     set-energy-color 98
@@ -58,9 +58,9 @@ to setup
   set-default-shape jellyfishes "default"
   create-jellyfishes initial-number-jellyfish
   [
-    set size 0.4
+    set size 0.7
     setxy random-xcor random-ycor
-    set color green
+    set color white
   ]
 
   ask patches [
