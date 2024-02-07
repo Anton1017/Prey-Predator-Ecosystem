@@ -790,8 +790,8 @@ Food Parameters\n
 PLOT
 28
 586
-546
-736
+548
+808
 Population Graph
 time
 population
@@ -856,7 +856,7 @@ prey-mean-ticks-reproduction
 prey-mean-ticks-reproduction
 30
 500
-150.0
+200.0
 10
 1
 NIL
@@ -871,7 +871,7 @@ predator-reproduction-cycle
 predator-reproduction-cycle
 200
 1400
-500.0
+700.0
 50
 1
 NIL
@@ -916,7 +916,7 @@ predator-age
 predator-age
 500
 3000
-1800.0
+1000.0
 100
 1
 NIL
@@ -931,7 +931,7 @@ predator-tick-reproduction-chance
 predator-tick-reproduction-chance
 0.0001
 0.05
-0.0249
+0.005
 0.0001
 1
 NIL
@@ -1028,16 +1028,31 @@ PENS
 "aged" 1.0 0 -7500403 true "" "plot fish-aged"
 
 SLIDER
-764
-751
-964
-784
+761
+736
+961
+769
 predator-energy-requirement
 predator-energy-requirement
 5
 100
 80.0
 5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+759
+777
+953
+810
+predator-reproduction-radius
+predator-reproduction-radius
+1
+20
+20.0
+1
 1
 NIL
 HORIZONTAL
