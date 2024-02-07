@@ -44,7 +44,7 @@ to setup
     set energy (1 + random max-energy)
     set-energy-color 98
     setxy random-xcor random-ycor
-    set shark-reproduction-chance 0.2
+    set shark-reproduction-chance 0.01
     ;set birth-tick ticks
   ]
 
@@ -396,7 +396,7 @@ initial-number-fishes
 initial-number-fishes
 1
 100
-65.0
+60.0
 1
 1
 NIL
