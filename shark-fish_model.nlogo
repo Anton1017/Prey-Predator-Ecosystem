@@ -72,7 +72,7 @@ to go
   set movement-constant swim-stride
   ask sharks [
     set-direction
-    if energy <  50 [
+    if energy <  30 [
       ; Homing behavior for sharks when energy is below  50
       let closest-fish min-one-of fishes [distance myself]
       if closest-fish != nobody [
@@ -81,7 +81,6 @@ to go
       ]
     ]
   ]
-
 
   hungry-predator?
 
@@ -637,7 +636,7 @@ energy-gain-predator
 energy-gain-predator
 1
 100
-30.0
+50.0
 1
 1
 NIL
