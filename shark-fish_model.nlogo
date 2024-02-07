@@ -14,7 +14,7 @@ fishes-own [energy move-distance max-energy
   health-status ;; for monitoring reproduction eligibility
   schoolmates
   nearest-neighbor]
-sharks-own [energy move-distance max-energy]
+sharks-own [energy move-distance max-energy birth-tick]
 patches-own [patch-growth-countdown algae-patch alive]
 
 breed [fishes fish]
@@ -45,7 +45,7 @@ to setup
     set-energy-color 98
     setxy random-xcor random-ycor
     set shark-reproduction-chance 0.01
-    ;set birth-tick ticks
+    set birth-tick ticks
   ]
 
   set-default-shape algaes "plant"
@@ -83,6 +83,33 @@ to go
         face closest-fish
         fd movement-constant
       ]
+    ]
+
+    if ticks - birth-tick >= 800 [
+      die
+    ]
+  ]
+
+  ask sharks [
+    if ticks - birth-tick >=  600 and energy >=  70 [
+      let nearby-sharks sharks in-radius 5  ; Assuming a small enough radius to detect nearby sharks
+      let has-reproduced? false  ; Flag to track if the shark has reproduced
+      ask nearby-sharks [
+        if self != myself [
+          if random-float 1.0 < shark-reproduction-chance [
+            hatch 1 [
+              setxy ([xcor] of myself + random-float   2 -   1)
+                    ([ycor] of myself + random-float   2 -   1)
+              set energy (energy / 2)  ; Sharing energy equally between parent and offspring
+              set max-energy max-energy
+              set birth-tick ticks  ; Set the birth-tick of the new shark to the current tick count
+            ]
+            set energy (energy - 50)  ; Reduce energy of the parent shark
+            set has-reproduced? true
+          ]
+        ]
+      ]
+      if has-reproduced? [stop]  ; Stop checking for reproduction if already reproduced
     ]
   ]
 
@@ -260,22 +287,6 @@ to move
 
   ask sharks [
     fd movement-constant
-    let nearby-sharks sharks in-radius   1  ; Assuming a small enough radius to detect nearby sharks
-    let has-reproduced? false  ; Flag to track if the shark has reproduced
-    ask nearby-sharks [
-      if self != myself and energy >=   90 and not has-reproduced? [
-        if random-float   1.0 < shark-reproduction-chance [
-          hatch   1 [
-            setxy ([xcor] of myself + random-float   2 -   1)
-                  ([ycor] of myself + random-float   2 -   1)
-            set energy (energy /   2)  ; Sharing energy equally between parent and offspring
-            set max-energy max-energy
-          ]
-          set energy (energy -   30)  ; Reduce energy of the parent shark
-          ;set has-reproduced? true  ; Set the flag to indicate reproduction has occurred
-        ]
-      ]
-    ]
   ]
 
     ask jellyfishes [
@@ -428,7 +439,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-16.0
+15.0
 1
 1
 NIL
