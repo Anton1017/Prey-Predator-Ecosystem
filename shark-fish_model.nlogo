@@ -82,6 +82,8 @@ end
 
 to go
   ; govern shark movement
+  if (count sharks) = 0 or (count fishes) = 0 [stop]
+
   update-energy
   set movement-constant swim-stride
   ask sharks [
@@ -508,7 +510,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-29.0
+40.0
 1
 1
 NIL
@@ -538,7 +540,7 @@ shark-max-energy
 shark-max-energy
 0
 100
-100.0
+50.0
 1
 1
 NIL
@@ -855,7 +857,7 @@ prey-mean-ticks-reproduction
 prey-mean-ticks-reproduction
 30
 500
-80.0
+270.0
 10
 1
 NIL
@@ -930,7 +932,7 @@ predator-tick-reproduction-chance
 predator-tick-reproduction-chance
 0.0001
 0.05
-0.0397
+0.035
 0.0001
 1
 NIL
