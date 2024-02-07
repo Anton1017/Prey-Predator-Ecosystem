@@ -854,8 +854,8 @@ predator-age
 predator-age
 500
 3000
-1300.0
-100
+1250.0
+50
 1
 NIL
 HORIZONTAL
