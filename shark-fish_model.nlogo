@@ -485,7 +485,7 @@ initial-number-fishes
 initial-number-fishes
 1
 150
-150.0
+26.0
 1
 1
 NIL
@@ -517,7 +517,7 @@ initial-number-sharks
 initial-number-sharks
 1
 100
-20.0
+50.0
 1
 1
 NIL
@@ -546,8 +546,8 @@ SLIDER
 shark-max-energy
 shark-max-energy
 0
-100
-50.0
+1000
+600.0
 1
 1
 NIL
@@ -562,7 +562,7 @@ max-turning
 max-turning
 1
 40
-22.0
+24.0
 1
 1
 NIL
@@ -624,7 +624,7 @@ initial-number-jellyfish
 initial-number-jellyfish
 0
 100
-70.0
+72.0
 1
 1
 NIL
@@ -639,7 +639,7 @@ initial-number-algae-patches
 initial-number-algae-patches
 1
 20
-6.0
+12.0
 1
 1
 NIL
@@ -684,7 +684,7 @@ max-align-turn
 max-align-turn
 1
 90
-29.0
+42.2
 0.10
 1
 degrees
@@ -699,7 +699,7 @@ max-cohere-turn
 max-cohere-turn
 1
 90
-29.5
+38.1
 0.10
 1
 degrees
@@ -734,7 +734,7 @@ energy-gain-prey
 energy-gain-prey
 1
 100
-60.0
+70.0
 1
 1
 NIL
@@ -743,13 +743,13 @@ HORIZONTAL
 SLIDER
 201
 482
-373
+378
 515
 energy-gain-predator
 energy-gain-predator
 1
-100
-70.0
+1000
+500.0
 1
 1
 NIL
@@ -779,7 +779,7 @@ food-respawn-time
 food-respawn-time
 10
 100
-70.0
+100.0
 1
 1
 ticks
@@ -834,7 +834,7 @@ prey-reproduction-cycle
 prey-reproduction-cycle
 150
 1000
-150.0
+250.0
 50
 1
 NIL
@@ -864,7 +864,7 @@ prey-mean-ticks-reproduction
 prey-mean-ticks-reproduction
 30
 500
-200.0
+30.0
 10
 1
 NIL
@@ -879,7 +879,7 @@ predator-reproduction-cycle
 predator-reproduction-cycle
 200
 1400
-700.0
+800.0
 50
 1
 NIL
@@ -894,7 +894,7 @@ predator-reproduction-period
 predator-reproduction-period
 100
 450
-450.0
+100.0
 10
 1
 NIL
@@ -909,7 +909,7 @@ prey-age
 prey-age
 100
 800
-800.0
+500.0
 50
 1
 NIL
@@ -938,8 +938,8 @@ SLIDER
 predator-tick-reproduction-chance
 predator-tick-reproduction-chance
 0.0001
-0.05
-0.005
+0.0070
+5.0E-4
 0.0001
 1
 NIL
@@ -954,7 +954,7 @@ panic-length
 panic-length
 1
 100
-50.0
+100.0
 1
 1
 ticks
@@ -984,7 +984,7 @@ predator-hunger-min
 predator-hunger-min
 0.1
 1
-0.3
+0.1
 0.1
 1
 * max-energy
@@ -999,7 +999,7 @@ prey-hunger-min
 prey-hunger-min
 0.1
 1
-0.8
+0.5
 0.1
 1
 * max-energy
@@ -1038,14 +1038,14 @@ PENS
 SLIDER
 1661
 196
-1861
+1881
 229
 predator-energy-requirement
 predator-energy-requirement
-5
+0
+1000
+400.0
 100
-80.0
-5
 1
 NIL
 HORIZONTAL
@@ -1053,13 +1053,13 @@ HORIZONTAL
 SLIDER
 1663
 234
-1857
+1874
 267
 predator-reproduction-radius
 predator-reproduction-radius
 1
-20
-20.0
+100
+1.0
 1
 1
 NIL
